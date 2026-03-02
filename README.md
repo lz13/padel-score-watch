@@ -37,4 +37,4 @@ A minimal Apple Watch app for keeping score during padel matches.
 - No companion iOS app needed
 - Tiebreak at 6-6 not implemented (simplified for prototype)
 
-Built by Lovro Zelic, 2026. Enjoy keeping score on the court!
+Built by lz13(https://github.com/lz13), 2026. Enjoy keeping score on the court!
