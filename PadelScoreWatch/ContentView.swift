@@ -39,42 +39,48 @@ struct ContentView: View {
             // Point score
             HStack(spacing: 4) {
                 // Team 1
-                Button(action: {
-                    game.pointWon(by: 1)
-                }) {
-                    VStack(spacing: 2) {
-                        Text("Team 1")
-                            .font(.caption2)
-                        Text(game.scoreDisplay(for: 1))
-                            .font(.title2)
-                            .fontWeight(.bold)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-                    .background(Color.blue.opacity(0.3))
-                    .cornerRadius(8)
+                VStack(spacing: 2) {
+                    Text("Team 1")
+                        .font(.caption2)
+                    Text(game.scoreDisplay(for: 1))
+                        .font(.title2)
+                        .fontWeight(.bold)
                 }
-                .buttonStyle(PlainButtonStyle())
-                .disabled(game.matchWinner != nil)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+                .background(Color.blue.opacity(0.3))
+                .cornerRadius(8)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    if game.matchWinner == nil {
+                        game.pointWon(by: 1)
+                    }
+                }
+                .onLongPressGesture(minimumDuration: 0.5) {
+                    game.removePoint(from: 1)
+                }
                 
                 // Team 2
-                Button(action: {
-                    game.pointWon(by: 2)
-                }) {
-                    VStack(spacing: 2) {
-                        Text("Team 2")
-                            .font(.caption2)
-                        Text(game.scoreDisplay(for: 2))
-                            .font(.title2)
-                            .fontWeight(.bold)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-                    .background(Color.orange.opacity(0.3))
-                    .cornerRadius(8)
+                VStack(spacing: 2) {
+                    Text("Team 2")
+                        .font(.caption2)
+                    Text(game.scoreDisplay(for: 2))
+                        .font(.title2)
+                        .fontWeight(.bold)
                 }
-                .buttonStyle(PlainButtonStyle())
-                .disabled(game.matchWinner != nil)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+                .background(Color.orange.opacity(0.3))
+                .cornerRadius(8)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    if game.matchWinner == nil {
+                        game.pointWon(by: 2)
+                    }
+                }
+                .onLongPressGesture(minimumDuration: 0.5) {
+                    game.removePoint(from: 2)
+                }
             }
             .padding(.horizontal, 4)
             

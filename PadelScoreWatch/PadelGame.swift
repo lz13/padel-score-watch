@@ -23,6 +23,16 @@ class PadelGame: ObservableObject {
         checkGameEnd()
     }
     
+    func removePoint(from team: Int) {
+        matchWinner = nil
+        if team == 1 && team1Score > 0 {
+            team1Score -= 1
+        } else if team == 2 && team2Score > 0 {
+            team2Score -= 1
+        }
+        checkGameEnd()
+    }
+    
     private func checkGameEnd() {
         // Check for game win
         if team1Score >= 4 && team1Score >= team2Score + 2 {
