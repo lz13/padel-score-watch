@@ -1,4 +1,5 @@
 import SwiftUI
+import WatchKit
 
 struct ContentView: View {
     @StateObject private var game = PadelGame()
@@ -53,10 +54,12 @@ struct ContentView: View {
                 .contentShape(Rectangle())
                 .onTapGesture {
                     if game.matchWinner == nil {
+                        WKInterfaceDevice.current().play(.click)
                         game.pointWon(by: 1)
                     }
                 }
                 .onLongPressGesture(minimumDuration: 0.5) {
+                    WKInterfaceDevice.current().play(.stop)
                     game.removePoint(from: 1)
                 }
                 
@@ -75,10 +78,12 @@ struct ContentView: View {
                 .contentShape(Rectangle())
                 .onTapGesture {
                     if game.matchWinner == nil {
+                        WKInterfaceDevice.current().play(.click)
                         game.pointWon(by: 2)
                     }
                 }
                 .onLongPressGesture(minimumDuration: 0.5) {
+                    WKInterfaceDevice.current().play(.stop)
                     game.removePoint(from: 2)
                 }
             }
