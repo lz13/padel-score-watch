@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var game = PadelGame()
+    @State private var showResetConfirmation = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -92,7 +93,7 @@ struct ContentView: View {
             
             // Reset button
             Button(action: {
-                game.reset()
+                showResetConfirmation = true
             }) {
                 Text("Reset")
                     .font(.caption)
@@ -104,6 +105,14 @@ struct ContentView: View {
             .buttonStyle(PlainButtonStyle())
             .padding(.horizontal, 4)
             .padding(.top, 8)
+            .confirmationDialog("Reset Game?", isPresented: $showResetConfirmation, titleVisibility: .visible) {
+                Button("Reset", role: .destructive) {
+                    game.reset()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("This will reset all scores. Are you sure?")
+            }
         }
         .padding(4)
     }
