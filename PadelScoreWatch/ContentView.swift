@@ -126,6 +126,17 @@ struct ContentView: View {
             }
         }
         .padding(4)
+        .onChange(of: game.team1Games + game.team2Games) { _ in
+            WKInterfaceDevice.current().play(.success)
+        }
+        .onChange(of: game.team1Sets + game.team2Sets) { _ in
+            WKInterfaceDevice.current().play(.notification)
+        }
+        .onChange(of: game.matchWinner) { winner in
+            if winner != nil {
+                WKInterfaceDevice.current().play(.success)
+            }
+        }
     }
 }
 
