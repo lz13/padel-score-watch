@@ -51,6 +51,9 @@ class PadelGame: ObservableObject {
                 isDeuce = false
                 advantage = 2
             }
+        } else {
+            isDeuce = false
+            advantage = nil
         }
     }
     
