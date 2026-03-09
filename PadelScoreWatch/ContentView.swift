@@ -18,7 +18,7 @@ struct ContentView: View {
             // Timer or Start button
             if game.isMatchStarted {
                 Text(game.timeDisplay)
-                    .font(.caption2)
+                    .font(.caption2) 
                     .foregroundColor(.gray)
                     .padding(.bottom, 2)
             } else {
@@ -63,8 +63,15 @@ struct ContentView: View {
             HStack(spacing: 4) {
                 // Team 1
                 VStack(spacing: 2) {
-                    Text("Team 1")
-                        .font(.caption2)
+                    HStack(spacing: 2) {
+                        if game.currentServer == 1 {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 6, height: 6)
+                        }
+                        Text("Team 1")
+                            .font(.caption2)
+                    }
                     Text(game.scoreDisplay(for: 1))
                         .font(.title2)
                         .fontWeight(.bold)
@@ -87,8 +94,15 @@ struct ContentView: View {
                 
                 // Team 2
                 VStack(spacing: 2) {
-                    Text("Team 2")
-                        .font(.caption2)
+                    HStack(spacing: 2) {
+                        if game.currentServer == 2 {
+                            Circle()
+                                .fill(Color.green)
+                                .frame(width: 6, height: 6)
+                        }
+                        Text("Team 2")
+                            .font(.caption2)
+                    }
                     Text(game.scoreDisplay(for: 2))
                         .font(.title2)
                         .fontWeight(.bold)

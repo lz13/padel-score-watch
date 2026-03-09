@@ -13,9 +13,27 @@ class PadelGame: ObservableObject {
     @Published var elapsedTime: Int = 0
     @Published var isMatchStarted: Bool = false
     @Published var isTiebreak: Bool = false
+    @Published var servingTeam: Int = 1
     
     private var timer: Timer?
     private var startTime: Date?
+    private var lastGameServer: Int = 1
+    
+    var currentServer: Int {
+        if isTiebreak {
+            let totalPoints = team1Score + team2Score
+            if totalPoints == 0 {
+                return lastGameServer
+            }
+            let serverGroup = (totalPoints + 1) / 2
+            if serverGroup % 2 == 1 {
+                return lastGameServer == 1 ? 2 : 1
+            } else {
+                return lastGameServer
+            }
+        }
+        return servingTeam
+    }
     
     func startMatch() {
         guard !isMatchStarted else { return }
@@ -112,6 +130,8 @@ class PadelGame: ObservableObject {
         advantage = nil
         isTiebreak = false
         
+        servingTeam = servingTeam == 1 ? 2 : 1
+        
         if wasTiebreak {
             setWon(by: team)
         } else {
@@ -128,6 +148,7 @@ class PadelGame: ObservableObject {
         } else if team1Games == 6 && team2Games == 6 && !isTiebreak {
             // Start tiebreak at 6-6
             isTiebreak = true
+            lastGameServer = servingTeam
         }
     }
     
@@ -171,6 +192,7 @@ class PadelGame: ObservableObject {
         elapsedTime = 0
         isMatchStarted = false
         isTiebreak = false
+        servingTeam = 1
     }
     
     func scoreDisplay(for team: Int) -> String {
