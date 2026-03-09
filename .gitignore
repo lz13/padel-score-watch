@@ -1,3 +1,7 @@
 # Xcode user-specific data
 *.xcuserstate
 xcuserdata/
+
+# Temporary generated files
+GeneratedIcons/
+*.orig
