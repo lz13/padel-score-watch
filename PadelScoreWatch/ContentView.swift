@@ -37,24 +37,27 @@ struct ContentView: View {
                 .padding(.bottom, 2)
             }
             
-            // Sets score
+            // Sets and Games score
             HStack {
-                Text("Sets: \(game.team1Sets)")
-                    .font(.caption2)
-                Spacer()
-                Text("\(game.team2Sets)")
-                    .font(.caption2)
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 2)
-            
-            // Games score
-            HStack {
-                Text("Games: \(game.team1Games)")
-                    .font(.caption2)
-                Spacer()
-                Text("\(game.team2Games)")
-                    .font(.caption2)
+                VStack(spacing: 1) {
+                    Text("Sets")
+                        .font(.system(size: 8))
+                        .foregroundColor(.gray)
+                    Text("\(game.team1Sets):\(game.team2Sets)")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                }
+                .frame(maxWidth: .infinity)
+                
+                VStack(spacing: 1) {
+                    Text("Games")
+                        .font(.system(size: 8))
+                        .foregroundColor(.gray)
+                    Text("\(game.team1Games):\(game.team2Games)")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                }
+                .frame(maxWidth: .infinity)
             }
             .padding(.horizontal)
             .padding(.bottom, 8)
