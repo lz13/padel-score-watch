@@ -12,6 +12,7 @@ class PadelGame: ObservableObject {
     @Published var matchWinner: Int? = nil
     @Published var elapsedTime: Int = 0
     @Published var isMatchStarted: Bool = false
+    @Published var isTiebreak: Bool = false
     
     private var timer: Timer?
     private var startTime: Date?
@@ -64,30 +65,41 @@ class PadelGame: ObservableObject {
     }
     
     private func checkGameEnd() {
-        // Check for game win
-        if team1Score >= 4 && team1Score >= team2Score + 2 {
-            gameWon(by: 1)
-        } else if team2Score >= 4 && team2Score >= team1Score + 2 {
-            gameWon(by: 2)
-        } else if team1Score >= 3 && team2Score >= 3 {
-            // Deuce logic
-            if team1Score == team2Score {
-                isDeuce = true
-                advantage = nil
-            } else if team1Score > team2Score {
-                isDeuce = false
-                advantage = 1
-            } else {
-                isDeuce = false
-                advantage = 2
+        if isTiebreak {
+            // Tiebreak: first to 7, win by 2
+            if team1Score >= 7 && team1Score >= team2Score + 2 {
+                gameWon(by: 1)
+            } else if team2Score >= 7 && team2Score >= team1Score + 2 {
+                gameWon(by: 2)
             }
         } else {
-            isDeuce = false
-            advantage = nil
+            // Normal game: first to 4, win by 2
+            if team1Score >= 4 && team1Score >= team2Score + 2 {
+                gameWon(by: 1)
+            } else if team2Score >= 4 && team2Score >= team1Score + 2 {
+                gameWon(by: 2)
+            } else if team1Score >= 3 && team2Score >= 3 {
+                // Deuce logic
+                if team1Score == team2Score {
+                    isDeuce = true
+                    advantage = nil
+                } else if team1Score > team2Score {
+                    isDeuce = false
+                    advantage = 1
+                } else {
+                    isDeuce = false
+                    advantage = 2
+                }
+            } else {
+                isDeuce = false
+                advantage = nil
+            }
         }
     }
     
     private func gameWon(by team: Int) {
+        let wasTiebreak = isTiebreak
+        
         if team == 1 {
             team1Games += 1
         } else {
@@ -98,8 +110,13 @@ class PadelGame: ObservableObject {
         team2Score = 0
         isDeuce = false
         advantage = nil
+        isTiebreak = false
         
-        checkSetEnd()
+        if wasTiebreak {
+            setWon(by: team)
+        } else {
+            checkSetEnd()
+        }
     }
     
     private func checkSetEnd() {
@@ -108,8 +125,10 @@ class PadelGame: ObservableObject {
             setWon(by: 1)
         } else if team2Games >= 6 && team2Games >= team1Games + 2 {
             setWon(by: 2)
+        } else if team1Games == 6 && team2Games == 6 && !isTiebreak {
+            // Start tiebreak at 6-6
+            isTiebreak = true
         }
-        // In real padel you'd have tiebreak at 6-6, keeping it simple for now
     }
     
     private func setWon(by team: Int) {
@@ -121,6 +140,7 @@ class PadelGame: ObservableObject {
         
         team1Games = 0
         team2Games = 0
+        isTiebreak = false
         
         checkMatchEnd()
     }
@@ -150,11 +170,15 @@ class PadelGame: ObservableObject {
         startTime = nil
         elapsedTime = 0
         isMatchStarted = false
+        isTiebreak = false
     }
     
     func scoreDisplay(for team: Int) -> String {
         let score = team == 1 ? team1Score : team2Score
-        let opponentScore = team == 1 ? team2Score : team1Score
+        
+        if isTiebreak {
+            return "\(score)"
+        }
         
         // Check for deuce/advantage
         if team1Score >= 3 && team2Score >= 3 {

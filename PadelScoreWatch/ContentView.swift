@@ -111,8 +111,13 @@ struct ContentView: View {
             }
             .padding(.horizontal, 4)
             
-            // Deuce indicator
-            if game.isDeuce {
+            // Deuce/Tiebreak indicator
+            if game.isTiebreak {
+                Text("TIEBREAK")
+                    .font(.caption2)
+                    .foregroundColor(.purple)
+                    .padding(.top, 4)
+            } else if game.isDeuce {
                 Text("DEUCE")
                     .font(.caption2)
                     .foregroundColor(.yellow)
