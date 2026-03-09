@@ -15,6 +15,28 @@ struct ContentView: View {
                     .padding(.bottom, 4)
             }
             
+            // Timer or Start button
+            if game.isMatchStarted {
+                Text(game.timeDisplay)
+                    .font(.caption2)
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 2)
+            } else {
+                Button(action: {
+                    game.startMatch()
+                }) {
+                    Text("Start Match")
+                        .font(.caption2)
+                        .padding(.vertical, 2)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.green.opacity(0.3))
+                        .cornerRadius(6)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.horizontal)
+                .padding(.bottom, 2)
+            }
+            
             // Sets score
             HStack {
                 Text("Sets: \(game.team1Sets)")

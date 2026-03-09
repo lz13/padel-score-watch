@@ -10,6 +10,20 @@ class PadelGame: ObservableObject {
     @Published var isDeuce: Bool = false
     @Published var advantage: Int? = nil // 1 or 2
     @Published var matchWinner: Int? = nil
+    @Published var elapsedTime: Int = 0
+    @Published var isMatchStarted: Bool = false
+    
+    private var timer: Timer?
+    private var startTime: Date?
+    
+    func startMatch() {
+        guard !isMatchStarted else { return }
+        isMatchStarted = true
+        startTime = Date()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            self?.updateElapsedTime()
+        }
+    }
     
     func pointWon(by team: Int) {
         guard matchWinner == nil else { return }
@@ -21,6 +35,22 @@ class PadelGame: ObservableObject {
         }
         
         checkGameEnd()
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    private func updateElapsedTime() {
+        guard let startTime = startTime else { return }
+        elapsedTime = Int(Date().timeIntervalSince(startTime))
+    }
+    
+    var timeDisplay: String {
+        let minutes = elapsedTime / 60
+        let seconds = elapsedTime % 60
+        return String(format: "%d:%02d", minutes, seconds)
     }
     
     func removePoint(from team: Int) {
@@ -99,8 +129,10 @@ class PadelGame: ObservableObject {
         // Best of 3 sets
         if team1Sets == 2 {
             matchWinner = 1
+            stopTimer()
         } else if team2Sets == 2 {
             matchWinner = 2
+            stopTimer()
         }
     }
     
@@ -114,6 +146,10 @@ class PadelGame: ObservableObject {
         isDeuce = false
         advantage = nil
         matchWinner = nil
+        stopTimer()
+        startTime = nil
+        elapsedTime = 0
+        isMatchStarted = false
     }
     
     func scoreDisplay(for team: Int) -> String {
