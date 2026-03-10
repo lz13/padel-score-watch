@@ -21,6 +21,12 @@ A minimal Apple Watch app for keeping score during padel matches.
 2. Select a Watch simulator (e.g., Apple Watch Series 9 - 45mm)
 3. Press Cmd+R to build and run
 
+## Running Tests
+
+1. Open the project in Xcode
+2. Press Cmd+U to run the test suite
+3. Tests cover scoring logic, deuce/advantage, tiebreaks, and match wins
+
 ## Usage
 
 - Tap **Start Match** to begin the timer
@@ -37,6 +43,7 @@ A minimal Apple Watch app for keeping score during padel matches.
 - `PadelScoreWatchApp.swift` - App entry point
 - `ContentView.swift` - Main UI
 - `PadelGame.swift` - Game logic and scoring rules
+- `PadelScoreWatchTests/PadelGameTests.swift` - Test suite for game logic
 
 ## Notes
 
